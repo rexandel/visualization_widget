@@ -12,14 +12,16 @@ class Visualization3DWidget(QOpenGLWidget):
         glutInit()
         super().__init__(parent)
 
-        self.default_rotation_x = -90
+        self.default_rotation_x = -75
         self.default_rotation_y = 0
-        self.default_zoom_level = 35
+        self.default_rotation_z = 0
+        self.default_zoom_level = 20
         self.default_position_x = 0.0
         self.default_position_y = 0.0
 
         self.rotation_x = self.default_rotation_x
         self.rotation_y = self.default_rotation_y
+        self.rotation_z = self.default_rotation_z
         self.zoom_level = self.default_zoom_level
         self.position_x = self.default_position_x
         self.position_y = self.default_position_y
@@ -29,7 +31,7 @@ class Visualization3DWidget(QOpenGLWidget):
         self.is_rotating = False
         self.is_moving = False
 
-        self.grid_size = 10
+        self.grid_size = 5
         self.grid_step = 1
 
         self.grid_visible = True
@@ -40,6 +42,7 @@ class Visualization3DWidget(QOpenGLWidget):
         self.display_lists = {}
         self.z_min = 0
         self.z_max = 0
+        self.optimization_path = np.array([])
 
         self.animation_timer = QTimer(self)
         self.animation_timer.timeout.connect(self.update)
@@ -48,6 +51,7 @@ class Visualization3DWidget(QOpenGLWidget):
     def restore_default_view(self):
         self.rotation_x = self.default_rotation_x
         self.rotation_y = self.default_rotation_y
+        self.rotation_z = self.default_rotation_z
         self.zoom_level = self.default_zoom_level
         self.position_x = self.default_position_x
         self.position_y = self.default_position_y
@@ -103,6 +107,7 @@ class Visualization3DWidget(QOpenGLWidget):
         glTranslatef(self.position_x, self.position_y, 0)
         glRotatef(self.rotation_x, 1, 0, 0)
         glRotatef(self.rotation_y, 0, 1, 0)
+        glRotatef(self.rotation_z, 0, 0, 1)
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glDisable(GL_POLYGON_SMOOTH)
@@ -118,6 +123,8 @@ class Visualization3DWidget(QOpenGLWidget):
             if 'function' not in self.display_lists:
                 self.display_lists['function'] = self.create_function_display_list()
             glCallList(self.display_lists['function'])
+        
+        self.draw_optimization_path()
 
     def create_function_display_list(self):
         display_list = glGenLists(1)
@@ -126,6 +133,7 @@ class Visualization3DWidget(QOpenGLWidget):
         if self.objective_function_data:
             for strip in self.objective_function_data:
                 glBegin(GL_QUAD_STRIP)
+                # glBegin(GL_LINES)
                 for vertex, color in strip:
                     glColor3f(*color)
                     glVertex3f(*vertex)
@@ -313,8 +321,11 @@ class Visualization3DWidget(QOpenGLWidget):
         dx, dy = event.x() - self.mouse_last_x, event.y() - self.mouse_last_y
 
         if self.is_rotating:
-            self.rotation_x += dy / 5
-            self.rotation_y += dx / 5
+            if event.modifiers() & Qt.ShiftModifier:
+                self.rotation_z += dx / 5
+            else:
+                self.rotation_x += dy / 5
+                self.rotation_y += dx / 5
         elif self.is_moving:
             movement_speed = 0.001 * self.zoom_level
             self.position_x += dx * movement_speed
@@ -326,3 +337,31 @@ class Visualization3DWidget(QOpenGLWidget):
     def mouseReleaseEvent(self, event):
         self.is_rotating = False
         self.is_moving = False
+    
+    def draw_optimization_path(self):
+        if self.optimization_path.size == 0:
+            return
+
+        points = np.array(self.optimization_path, dtype=np.float32)
+        z_values = np.zeros(len(points))
+
+        for i in range(len(points)):
+            z_values[i] = self.current_function(points[i, 0], points[i, 1])
+
+        z_norm = (z_values - self.z_min) / (self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size
+        vertices = np.column_stack((points, z_norm)).astype(np.float32)
+
+        glPointSize(10)
+        glColor3f(1, 0, 0)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glVertexPointer(3, GL_FLOAT, 0, vertices)
+        glDrawArrays(GL_POINTS, 0, len(vertices))
+
+        glLineWidth(2)
+        glDrawArrays(GL_LINE_STRIP, 0, len(vertices))
+
+        glDisableClientState(GL_VERTEX_ARRAY)
+    
+    def update_optimization_path(self, points):
+        self.optimization_path = points
+        self.update()
