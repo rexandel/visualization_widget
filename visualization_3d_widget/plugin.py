@@ -1,5 +1,7 @@
 from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
 from PyQt5.QtGui import QIcon
+from visualization_3d_widget.visualization_3d_widget import Visualization3DWidget
+
 
 class Visualization3DWidgetPlugin(QPyDesignerCustomWidgetPlugin):
     def __init__(self, parent=None):
@@ -36,4 +38,4 @@ class Visualization3DWidgetPlugin(QPyDesignerCustomWidgetPlugin):
         return False
 
     def includeFile(self):
-        return "visualization_3d_widget"
+        return "visualization_3d_widget.visualization_3d_widget"
