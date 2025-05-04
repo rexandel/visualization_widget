@@ -12,10 +12,10 @@ setup(
             'Visualization3DWidgetPlugin = visualization_3d_widget.plugin:Visualization3DWidgetPlugin'
         ]
     },
-    install_requires=[
-        'PyQt5>=5.15',
-        'numpy>=1.20',
-        'PyOpenGL>=3.1.5'
-    ],
-    python_requires='>=3.6',
+    # install_requires=[
+    #     'PyQt5>=5.15.9',
+    #     'numpy>=1.20',
+    #     'PyOpenGL>=3.1.5'
+    # ],
+    # python_requires='>=3.6',
 )
