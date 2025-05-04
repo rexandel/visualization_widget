@@ -9,6 +9,14 @@ import numpy as np
 
 class Visualization3DWidget(QOpenGLWidget):
     def __init__(self, parent=None):
+        """
+        Initializes the initial display parameters, including rotation angles, zoom level, position, and other settings.
+        Инициализирует начальные параметры отображения, включая угол вращения, уровень зума, позиции и другие параметры.
+
+        :param parent: Parent widget (default is None)
+        :param parent: Родительский виджет (по умолчанию None)
+        """
+
         glutInit()
         super().__init__(parent)
 
@@ -49,6 +57,11 @@ class Visualization3DWidget(QOpenGLWidget):
         self.animation_timer.start(16)
 
     def restore_default_view(self):
+        """
+        Restores the default view by resetting all rotation, zoom, and position parameters.
+        Восстанавливает стандартное отображение, сбрасывая все параметры вращения, зума и позиции.
+        """
+
         self.rotation_x = self.default_rotation_x
         self.rotation_y = self.default_rotation_y
         self.rotation_z = self.default_rotation_z
@@ -58,6 +71,22 @@ class Visualization3DWidget(QOpenGLWidget):
         self.update()
 
     def initializeGL(self):
+        """
+        Initializes the OpenGL context, including lighting, color, display modes, and camera setup.
+        Инициализирует OpenGL контекст, включая настройку освещения, цвета, режимов отображения, инициализацию камеры.
+
+        The settings include:
+        - Lighting
+        - Ambient, diffuse, and specular lighting
+        - Polygon and line modes
+        - Smooth shading
+        Настройки включают:
+        - Освещение
+        - Окружение, диффузное и спекулярное освещение
+        - Режимы для полигонов и линий
+        - Гладкая заливка
+        """
+
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LINE_SMOOTH)
@@ -90,6 +119,16 @@ class Visualization3DWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
 
     def resizeGL(self, width, height):
+        """
+        Resizes the OpenGL window and recalculates the projection when the window size changes.
+        Меняет размер окна OpenGL и пересчитывает проекцию при изменении размеров окна.
+
+        :param width: New window width
+        :param width: Новая ширина окна
+        :param height: New window height
+        :param height: Новая высота окна
+        """
+
         if height == 0:
             height = 1
         glViewport(0, 0, width, height)
@@ -99,6 +138,14 @@ class Visualization3DWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
 
     def paintGL(self):
+        """
+        Draws the 3D view considering all display settings: camera, axes, grid, function, and optimization path.
+        Рисует 3D-вид с учётом всех настроек отображения: камеры, осей, сетки, функции и оптимизационного пути.
+
+        Called whenever the scene needs to be redrawn.
+        Вызывается каждый раз, когда необходимо перерисовать сцену.
+        """
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
@@ -127,6 +174,14 @@ class Visualization3DWidget(QOpenGLWidget):
         self.draw_optimization_path()
 
     def create_function_display_list(self):
+        """
+        Creates a display list for the objective function using the function data.
+        Создает список отображения для целевой функции, используя данные функции.
+
+        :return: Display list ID for the function
+        :return: ID списка отображения для функции
+        """
+
         display_list = glGenLists(1)
         glNewList(display_list, GL_COMPILE)
 
@@ -143,6 +198,18 @@ class Visualization3DWidget(QOpenGLWidget):
         return display_list
 
     def build_objective_function_data(self):
+        """
+        Builds data for rendering the objective function, including the grid of values and normalizing them for display.
+        Создает данные для отображения целевой функции, включая таблицу значений и нормализуя их для отображения.
+
+        The data includes:
+        - x, y, z coordinates
+        - Colors for vertices based on depth and lighting
+        Данные включают:
+        - Координаты x, y, z
+        - Цвета для вершин с учётом глубины и освещения
+        """
+
         if self.current_function is None:
             return
 
@@ -194,12 +261,36 @@ class Visualization3DWidget(QOpenGLWidget):
             self.display_lists.pop('function')
 
     def set_function(self, func):
+        """
+        Sets the function for visualization and redraws the widget with the new function.
+        Устанавливает функцию для визуализации. Перерисовывает виджет с новой функцией.
+
+        :param func: Function of the form f(x, y) -> z
+        :param func: Функция вида f(x, y) -> z
+        """
+
         self.current_function = func
         if func is not None:
             self.build_objective_function_data()
         self.update()
 
     def render_axis_label(self, x, y, z, label, color=(0.0, 0.0, 0.0)):
+        """
+        Renders the axis label (X, Y, or Z) at specified coordinates.
+        Отображает метку оси (X, Y или Z) в заданных координатах.
+
+        :param x: X coordinate
+        :param x: Координата X
+        :param y: Y coordinate
+        :param y: Координата Y
+        :param z: Z coordinate
+        :param z: Координата Z
+        :param label: Axis label ("X", "Y", or "Z")
+        :param label: Метка оси ("X", "Y" или "Z")
+        :param color: Color of the label text (default is black)
+        :param color: Цвет текста метки (по умолчанию черный)
+        """
+
         glDisable(GL_LIGHTING)
         glColor3f(*color)
 
@@ -254,6 +345,15 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
     def render_axes(self):
+        """
+        Renders all three coordinate axes (X, Y, Z) in the 3D space.
+
+        Each axis is rendered in red, green, and blue for X, Y, and Z respectively.
+        Отображает все три оси координат (X, Y, Z) в 3D-пространстве.
+
+        Каждая ось отображается красным, зелёным и синим цветами для осей X, Y и Z соответственно.
+        """
+
         glDisable(GL_LIGHTING)
 
         glLineWidth(2)
@@ -285,6 +385,15 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnable(GL_LIGHTING)
 
     def render_grid(self):
+        """
+        Renders a grid in the 3D space to help orientate within the displayed data.
+
+        The grid is rendered in the Z=0 plane with a step defined by the grid_step variable.
+        Рисует сетку в 3D-пространстве, которая помогает ориентироваться в отображаемых данных.
+
+        Сетка рисуется в плоскости Z=0 с шагом, определяемым переменной grid_step.
+        """
+
         glLineWidth(1)
         glColor3f(0.7, 0.7, 0.7)
 
@@ -339,6 +448,15 @@ class Visualization3DWidget(QOpenGLWidget):
         self.is_moving = False
     
     def draw_optimization_path(self):
+        """
+        Renders the optimization path in the 3D view. The path is drawn as points and lines where each point represents an optimal function value.
+
+        The path is rendered in red.
+        Отображает путь оптимизации на 3D-диаграмме. Путь рисуется в виде точек и линий, где каждая точка соответствует оптимальному значению функции.
+
+        Путь отображается красным цветом.
+        """
+
         if self.optimization_path.size == 0:
             return
 
@@ -363,5 +481,13 @@ class Visualization3DWidget(QOpenGLWidget):
         glDisableClientState(GL_VERTEX_ARRAY)
     
     def update_optimization_path(self, points):
+        """
+        Updates the optimization path data and triggers the widget to redraw.
+        Обновляет данные пути оптимизации и запускает перерисовку виджета.
+
+        :param points: Array of points representing the optimization path
+        :param points: Массив точек, представляющих оптимизационный путь
+        """
+
         self.optimization_path = points
         self.update()
