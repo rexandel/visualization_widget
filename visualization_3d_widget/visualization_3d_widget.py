@@ -481,16 +481,28 @@ class Visualization3DWidget(QOpenGLWidget):
             glDrawArrays(GL_LINE_STRIP, 0, len(vertices))
 
         glDisableClientState(GL_VERTEX_ARRAY)
-    
-    def update_optimization_path(self, points, connect):
+
+    def update_optimization_path(self, points):
         """
         Updates the optimization path data and triggers the widget to redraw.
         Обновляет данные пути оптимизации и запускает перерисовку виджета.
 
         :param points: Array of points representing the optimization path
         :param points: Массив точек, представляющих оптимизационный путь
+        :param connect_points: Whether to connect the points with lines
+        :param connect_points: Соединять ли точки линиями
         """
 
-        self.connect_optimization_points = connect
         self.optimization_path = points
+        self.update()
+
+    def set_connect_optimization_points(self, connect):
+        """
+        Sets whether to connect optimization path points with lines.
+        Устанавливает, нужно ли соединять точки пути оптимизации линиями.
+
+        :param connect: Whether to connect the points
+        :param connect: Соединять ли точки
+        """
+        self.connect_optimization_points = connect
         self.update()
