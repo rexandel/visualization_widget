@@ -51,6 +51,7 @@ class Visualization3DWidget(QOpenGLWidget):
         self.z_min = 0
         self.z_max = 0
         self.optimization_path = np.array([])
+        self.connect_optimization_points = True
 
         self.animation_timer = QTimer(self)
         self.animation_timer.timeout.connect(self.update)
@@ -475,12 +476,13 @@ class Visualization3DWidget(QOpenGLWidget):
         glVertexPointer(3, GL_FLOAT, 0, vertices)
         glDrawArrays(GL_POINTS, 0, len(vertices))
 
-        glLineWidth(2)
-        glDrawArrays(GL_LINE_STRIP, 0, len(vertices))
+        if self.connect_optimization_points:
+            glLineWidth(2)
+            glDrawArrays(GL_LINE_STRIP, 0, len(vertices))
 
         glDisableClientState(GL_VERTEX_ARRAY)
     
-    def update_optimization_path(self, points):
+    def update_optimization_path(self, points, connect):
         """
         Updates the optimization path data and triggers the widget to redraw.
         Обновляет данные пути оптимизации и запускает перерисовку виджета.
@@ -489,5 +491,6 @@ class Visualization3DWidget(QOpenGLWidget):
         :param points: Массив точек, представляющих оптимизационный путь
         """
 
+        self.connect_optimization_points = connect
         self.optimization_path = points
         self.update()
