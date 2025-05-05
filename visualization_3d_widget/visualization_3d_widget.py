@@ -9,14 +9,6 @@ import numpy as np
 
 class Visualization3DWidget(QOpenGLWidget):
     def __init__(self, parent=None):
-        """
-        Initializes the initial display parameters, including rotation angles, zoom level, position, and other settings.
-        Инициализирует начальные параметры отображения, включая угол вращения, уровень зума, позиции и другие параметры.
-
-        :param parent: Parent widget (default is None)
-        :param parent: Родительский виджет (по умолчанию None)
-        """
-
         glutInit()
         super().__init__(parent)
 
@@ -60,11 +52,6 @@ class Visualization3DWidget(QOpenGLWidget):
         self.animation_timer.start(16)
 
     def restore_default_view(self):
-        """
-        Restores the default view by resetting all rotation, zoom, and position parameters.
-        Восстанавливает стандартное отображение, сбрасывая все параметры вращения, зума и позиции.
-        """
-
         self.rotation_x = self.default_rotation_x
         self.rotation_y = self.default_rotation_y
         self.rotation_z = self.default_rotation_z
@@ -74,22 +61,6 @@ class Visualization3DWidget(QOpenGLWidget):
         self.update()
 
     def initializeGL(self):
-        """
-        Initializes the OpenGL context, including lighting, color, display modes, and camera setup.
-        Инициализирует OpenGL контекст, включая настройку освещения, цвета, режимов отображения, инициализацию камеры.
-
-        The settings include:
-        - Lighting
-        - Ambient, diffuse, and specular lighting
-        - Polygon and line modes
-        - Smooth shading
-        Настройки включают:
-        - Освещение
-        - Окружение, диффузное и спекулярное освещение
-        - Режимы для полигонов и линий
-        - Гладкая заливка
-        """
-
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LINE_SMOOTH)
@@ -122,16 +93,6 @@ class Visualization3DWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
 
     def resizeGL(self, width, height):
-        """
-        Resizes the OpenGL window and recalculates the projection when the window size changes.
-        Меняет размер окна OpenGL и пересчитывает проекцию при изменении размеров окна.
-
-        :param width: New window width
-        :param width: Новая ширина окна
-        :param height: New window height
-        :param height: Новая высота окна
-        """
-
         if height == 0:
             height = 1
         glViewport(0, 0, width, height)
@@ -141,14 +102,6 @@ class Visualization3DWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
 
     def paintGL(self):
-        """
-        Draws the 3D view considering all display settings: camera, axes, grid, function, and optimization path.
-        Рисует 3D-вид с учётом всех настроек отображения: камеры, осей, сетки, функции и оптимизационного пути.
-
-        Called whenever the scene needs to be redrawn.
-        Вызывается каждый раз, когда необходимо перерисовать сцену.
-        """
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
@@ -180,11 +133,8 @@ class Visualization3DWidget(QOpenGLWidget):
             self.draw_constraints()
 
     def draw_constraints(self):
-        """
-        Отрисовывает границы всех ограничений на графике
-        """
         glDisable(GL_LIGHTING)
-        glColor3f(1, 0, 0)  # Красный цвет для ограничений
+        glColor3f(1, 0, 0)
         glLineWidth(2)
 
         for constraint in self.constraints:
@@ -193,65 +143,53 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnable(GL_LIGHTING)
 
     def draw_constraint_boundary(self, constraint):
-        """
-        Отрисовывает границу одного ограничения с помощью marching squares
-
-        :param constraint: функция ограничения вида g(x,y) <= 0
-        """
         resolution = 100
         x = np.linspace(-self.grid_size, self.grid_size, resolution)
         y = np.linspace(-self.grid_size, self.grid_size, resolution)
         X, Y = np.meshgrid(x, y)
 
-        # Вычисляем значения ограничения
         Z = np.zeros_like(X)
         for i in range(resolution):
             for j in range(resolution):
                 Z[i, j] = constraint(X[i, j], Y[i, j])
 
-        # Ищем границу (где constraint = 0)
         glBegin(GL_LINES)
         for i in range(resolution - 1):
             for j in range(resolution - 1):
-                # Проверяем переход через 0 в квадрате 2x2
                 edges = []
-                if Z[i, j] * Z[i + 1, j] <= 0:  # Переход через 0 по горизонтали
-                    # t - параметр для линейной интерполяции
+                if Z[i, j] * Z[i + 1, j] <= 0:
                     t = abs(Z[i, j]) / (abs(Z[i, j]) + abs(Z[i + 1, j])) if abs(Z[i, j]) + abs(Z[i + 1, j]) > 0 else 0.5
                     x0 = X[i, j] + t * (X[i + 1, j] - X[i, j])
                     y0 = Y[i, j]
                     edges.append((x0, y0))
 
-                if Z[i + 1, j] * Z[i + 1, j + 1] <= 0:  # Переход через 0 по вертикали справа
+                if Z[i + 1, j] * Z[i + 1, j + 1] <= 0:
                     t = abs(Z[i + 1, j]) / (abs(Z[i + 1, j]) + abs(Z[i + 1, j + 1])) if abs(Z[i + 1, j]) + abs(
                         Z[i + 1, j + 1]) > 0 else 0.5
                     x0 = X[i + 1, j]
                     y0 = Y[i + 1, j] + t * (Y[i + 1, j + 1] - Y[i + 1, j])
                     edges.append((x0, y0))
 
-                if Z[i, j + 1] * Z[i + 1, j + 1] <= 0:  # Переход через 0 по горизонтали сверху
+                if Z[i, j + 1] * Z[i + 1, j + 1] <= 0:
                     t = abs(Z[i, j + 1]) / (abs(Z[i, j + 1]) + abs(Z[i + 1, j + 1])) if abs(Z[i, j + 1]) + abs(
                         Z[i + 1, j + 1]) > 0 else 0.5
                     x0 = X[i, j + 1] + t * (X[i + 1, j + 1] - X[i, j + 1])
                     y0 = Y[i, j + 1]
                     edges.append((x0, y0))
 
-                if Z[i, j] * Z[i, j + 1] <= 0:  # Переход через 0 по вертикали слева
+                if Z[i, j] * Z[i, j + 1] <= 0:
                     t = abs(Z[i, j]) / (abs(Z[i, j]) + abs(Z[i, j + 1])) if abs(Z[i, j]) + abs(Z[i, j + 1]) > 0 else 0.5
                     x0 = X[i, j]
                     y0 = Y[i, j] + t * (Y[i, j + 1] - Y[i, j])
                     edges.append((x0, y0))
 
-                # Рисуем линии границы
                 if len(edges) >= 2:
                     for k in range(len(edges) - 1):
                         x0, y0 = edges[k]
                         x1, y1 = edges[k + 1]
-                        # Определяем высоту точек границы на основе значения целевой функции
                         if self.current_function:
                             z0 = self.current_function(x0, y0)
                             z1 = self.current_function(x1, y1)
-                            # Нормализуем значения z для отображения
                             z0_norm = (z0 - self.z_min) / (
                                         self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size
                             z1_norm = (z1 - self.z_min) / (
@@ -264,9 +202,6 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
     def create_function_display_list(self):
-        """
-        Создает display list для эффективного отображения функции с учетом ограничений.
-        """
         display_list = glGenLists(1)
         glNewList(display_list, GL_COMPILE)
 
@@ -278,14 +213,11 @@ class Visualization3DWidget(QOpenGLWidget):
                 for idx, (vertex, color) in enumerate(strip):
                     current_valid = not np.isnan(vertex[2])
 
-                    # Если текущая вершина допустима, добавляем ее
                     if current_valid:
                         glColor3f(*color)
                         glVertex3f(*vertex)
                         current_strip_valid = True
-                    # Если появился разрыв (переход от допустимых к недопустимым точкам)
                     elif current_strip_valid:
-                        # Завершаем текущую полосу и начинаем новую
                         glEnd()
                         glBegin(GL_QUAD_STRIP)
                         current_strip_valid = False
@@ -296,40 +228,31 @@ class Visualization3DWidget(QOpenGLWidget):
         return display_list
 
     def build_objective_function_data(self):
-        """
-        Строит данные для отображения целевой функции с учетом всех ограничений.
-        """
         if self.current_function is None:
             return
 
         x_values = np.linspace(-self.grid_size, self.grid_size, 200)
         y_values = np.linspace(-self.grid_size, self.grid_size, 200)
-        z_values = np.full((len(x_values), len(y_values)), np.nan)  # Изначально заполняем NaN
+        z_values = np.full((len(x_values), len(y_values)), np.nan)
 
         for i in range(len(x_values)):
             for j in range(len(y_values)):
                 x = x_values[i]
                 y = y_values[j]
 
-                # Проверяем, удовлетворяют ли х и y всем ограничениям
                 if self.constraints:
-                    # Точка допустима, только если все ограничения <= 0
                     valid = all(constraint(x, y) <= 0 for constraint in self.constraints)
                 else:
-                    # Если ограничений нет, точка всегда допустима
                     valid = True
 
                 if valid:
-                    # Заполняем только допустимые значения функции
                     z_values[i, j] = self.current_function(x, y)
 
-        # Находим min/max только по допустимым значениям (игнорируя NaN)
         valid_z = z_values[~np.isnan(z_values)]
         if len(valid_z) > 0:
             self.z_min = np.min(valid_z)
             self.z_max = np.max(valid_z)
         else:
-            # Если нет допустимых точек, устанавливаем значения по умолчанию
             self.z_min = 0
             self.z_max = 1
 
@@ -345,7 +268,6 @@ class Visualization3DWidget(QOpenGLWidget):
                 z1 = z_values[i, j]
                 z2 = z_values[i + 1, j]
 
-                # Нормализуем высоту для отображения
                 z1_norm = (z1 - self.z_min) / (
                             self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
                     z1) else np.nan
@@ -353,7 +275,6 @@ class Visualization3DWidget(QOpenGLWidget):
                             self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
                     z2) else np.nan
 
-                # Определяем цвет точек
                 if not np.isnan(z1):
                     z1_shadow = ((z1 - self.z_min) / (self.z_max - self.z_min)) ** 0.5
                     shadow_intensity1 = 1.0 - shadow_strength * (1.0 - z1_shadow)
@@ -361,7 +282,7 @@ class Visualization3DWidget(QOpenGLWidget):
                               ((y + self.grid_size) / (2 * self.grid_size)) * shadow_intensity1,
                               0.7 * shadow_intensity1)
                 else:
-                    color1 = (0, 0, 0)  # Не будет отображаться из-за NaN
+                    color1 = (0, 0, 0)
 
                 if not np.isnan(z2):
                     z2_shadow = ((z2 - self.z_min) / (self.z_max - self.z_min)) ** 0.5
@@ -370,7 +291,7 @@ class Visualization3DWidget(QOpenGLWidget):
                               ((y + self.grid_size) / (2 * self.grid_size)) * shadow_intensity2,
                               0.7 * shadow_intensity2)
                 else:
-                    color2 = (0, 0, 0)  # Не будет отображаться из-за NaN
+                    color2 = (0, 0, 0)
 
                 strip.append(((x1, y, z1_norm), color1))
                 strip.append(((x2, y, z2_norm), color2))
@@ -381,27 +302,9 @@ class Visualization3DWidget(QOpenGLWidget):
             self.display_lists.pop('function')
 
     def render_axis_label(self, x, y, z, label, color=(0.0, 0.0, 0.0)):
-        """
-        Renders the axis label (X, Y, or Z) at specified coordinates.
-        Отображает метку оси (X, Y или Z) в заданных координатах.
-
-        :param x: X coordinate
-        :param x: Координата X
-        :param y: Y coordinate
-        :param y: Координата Y
-        :param z: Z coordinate
-        :param z: Координата Z
-        :param label: Axis label ("X", "Y", or "Z")
-        :param label: Метка оси ("X", "Y" или "Z")
-        :param color: Color of the label text (default is black)
-        :param color: Цвет текста метки (по умолчанию черный)
-        """
-
         glDisable(GL_LIGHTING)
         glColor3f(*color)
-
         glPushMatrix()
-
         glTranslatef(x, y, z)
 
         glRotatef(-self.rotation_y, 0, 1, 0)
@@ -416,7 +319,6 @@ class Visualization3DWidget(QOpenGLWidget):
             self.render_z_symbol(0, 0, 0, size)
 
         glPopMatrix()
-
         glEnable(GL_LIGHTING)
 
     def render_x_symbol(self, x, y, z, size):
@@ -451,15 +353,6 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
     def render_axes(self):
-        """
-        Renders all three coordinate axes (X, Y, Z) in the 3D space.
-
-        Each axis is rendered in red, green, and blue for X, Y, and Z respectively.
-        Отображает все три оси координат (X, Y, Z) в 3D-пространстве.
-
-        Каждая ось отображается красным, зелёным и синим цветами для осей X, Y и Z соответственно.
-        """
-
         glDisable(GL_LIGHTING)
 
         glLineWidth(2)
@@ -479,27 +372,14 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
         offset = 0.7
-
         self.render_axis_label(self.grid_size + offset, 0, 0, "X", (0, 0, 0))
-
         self.render_axis_label(0, self.grid_size + offset, 0, "Y", (0, 0, 0))
-
         self.render_axis_label(0, 0, self.grid_size + offset, "Z", (0, 0, 0))
 
         glLineWidth(1)
-
         glEnable(GL_LIGHTING)
 
     def render_grid(self):
-        """
-        Renders a grid in the 3D space to help orientate within the displayed data.
-
-        The grid is rendered in the Z=0 plane with a step defined by the grid_step variable.
-        Рисует сетку в 3D-пространстве, которая помогает ориентироваться в отображаемых данных.
-
-        Сетка рисуется в плоскости Z=0 с шагом, определяемым переменной grid_step.
-        """
-
         glLineWidth(1)
         glColor3f(0.7, 0.7, 0.7)
 
@@ -554,15 +434,6 @@ class Visualization3DWidget(QOpenGLWidget):
         self.is_moving = False
 
     def draw_optimization_path(self):
-        """
-        Renders the optimization path in the 3D view. The path is drawn as points and lines where each point represents an optimal function value.
-
-        The path is rendered in red.
-        Отображает путь оптимизации на 3D-диаграмме. Путь рисуется в виде точек и линий, где каждая точка соответствует оптимальному значению функции.
-
-        Путь отображается красным цветом.
-        """
-
         if self.optimization_path.size == 0:
             return
 
@@ -588,67 +459,29 @@ class Visualization3DWidget(QOpenGLWidget):
         glDisableClientState(GL_VERTEX_ARRAY)
 
     def update_optimization_path(self, points):
-        """
-        Updates the optimization path data and triggers the widget to redraw.
-        Обновляет данные пути оптимизации и запускает перерисовку виджета.
-
-        :param points: Array of points representing the optimization path
-        :param points: Массив точек, представляющих оптимизационный путь
-        :param connect_points: Whether to connect the points with lines
-        :param connect_points: Соединять ли точки линиями
-        """
-
         self.optimization_path = points
         self.update()
 
     def set_connect_optimization_points(self, connect):
-        """
-        Sets whether to connect optimization path points with lines.
-        Устанавливает, нужно ли соединять точки пути оптимизации линиями.
-
-        :param connect: Whether to connect the points
-        :param connect: Соединять ли точки
-        """
-
         self.connect_optimization_points = connect
         self.update()
 
     def set_function(self, func):
-        """
-        Устанавливает функцию для визуализации. Перерисовывает виджет с новой функцией.
-
-        :param func: Функция вида f(x, y) -> z
-        """
         self.current_function = func
         self.build_objective_function_data()
         self.update()
 
     def add_constraint(self, constraint_func):
-        """
-        Добавляет ограничение к текущей визуализации
-
-        :param constraint_func: Функция ограничения g(x,y) <= 0
-        """
         if constraint_func not in self.constraints:
             self.constraints.append(constraint_func)
-            # Перестраиваем данные с учетом нового ограничения
             self.build_objective_function_data()
             self.update()
 
     def clear_constraints(self):
-        """
-        Очищает все ограничения
-        """
         self.constraints.clear()
-        # Перестраиваем данные без ограничений
         self.build_objective_function_data()
         self.update()
 
     def set_show_constraints(self, show):
-        """
-        Устанавливает видимость границ ограничений
-
-        :param show: Булево значение (True - показывать, False - скрыть)
-        """
         self.show_constraints = show
         self.update()
