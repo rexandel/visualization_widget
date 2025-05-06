@@ -102,6 +102,9 @@ class Visualization3DWidget(QOpenGLWidget):
         glMatrixMode(GL_MODELVIEW)
 
     def paintGL(self):
+        glEnable(GL_LINE_SMOOTH)
+        glEnable(GL_POLYGON_SMOOTH)
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
@@ -143,7 +146,7 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnable(GL_LIGHTING)
 
     def draw_constraint_boundary(self, constraint):
-        resolution = 100
+        resolution = 400
         x = np.linspace(-self.grid_size, self.grid_size, resolution)
         y = np.linspace(-self.grid_size, self.grid_size, resolution)
         X, Y = np.meshgrid(x, y)
@@ -231,8 +234,8 @@ class Visualization3DWidget(QOpenGLWidget):
         if self.current_function is None:
             return
 
-        x_values = np.linspace(-self.grid_size, self.grid_size, 200)
-        y_values = np.linspace(-self.grid_size, self.grid_size, 200)
+        x_values = np.linspace(-self.grid_size, self.grid_size, 800)
+        y_values = np.linspace(-self.grid_size, self.grid_size, 800)
         z_values = np.full((len(x_values), len(y_values)), np.nan)
 
         for i in range(len(x_values)):
@@ -269,10 +272,10 @@ class Visualization3DWidget(QOpenGLWidget):
                 z2 = z_values[i + 1, j]
 
                 z1_norm = (z1 - self.z_min) / (
-                            self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
+                        self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
                     z1) else np.nan
                 z2_norm = (z2 - self.z_min) / (
-                            self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
+                        self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
                     z2) else np.nan
 
                 if not np.isnan(z1):
