@@ -35,6 +35,7 @@ class Visualization3DWidget(QOpenGLWidget):
         self.grid_size_y = 10
         self.grid_size_z = 10
         self.grid_step = 1
+        self.resolution = 250
 
         self.grid_visible = True
         self.axes_visible = True
@@ -325,19 +326,18 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnable(GL_LIGHTING)
 
     def draw_constraint_boundary(self, constraint):
-        resolution = 100
-        x = np.linspace(-self.grid_size_x, self.grid_size_x, resolution)
-        y = np.linspace(-self.grid_size_y, self.grid_size_y, resolution)
+        x = np.linspace(-self.grid_size_x, self.grid_size_x, self.resolution)
+        y = np.linspace(-self.grid_size_y, self.grid_size_y, self.resolution)
         X, Y = np.meshgrid(x, y)
         Z = np.zeros_like(X)
 
-        for i in range(resolution):
-            for j in range(resolution):
+        for i in range(self.resolution):
+            for j in range(self.resolution):
                 Z[i, j] = constraint(X[i, j], Y[i, j])
         glBegin(GL_LINES)
 
-        for i in range(resolution - 1):
-            for j in range(resolution - 1):
+        for i in range(self.resolution - 1):
+            for j in range(self.resolution - 1):
                 edges = []
                 if Z[i, j] * Z[i + 1, j] <= 0:
                     t = abs(Z[i, j]) / (abs(Z[i, j]) + abs(Z[i + 1, j])) if abs(Z[i, j]) + abs(Z[i + 1, j]) > 0 else 0.5
@@ -402,8 +402,8 @@ class Visualization3DWidget(QOpenGLWidget):
     def build_objective_function_data(self):
         if self.current_function is None:
             return
-        x_values = np.linspace(-self.grid_size_x, self.grid_size_x, 200)
-        y_values = np.linspace(-self.grid_size_y, self.grid_size_y, 200)
+        x_values = np.linspace(-self.grid_size_x, self.grid_size_x, self.resolution)
+        y_values = np.linspace(-self.grid_size_y, self.grid_size_y, self.resolution)
         z_values = np.full((len(x_values), len(y_values)), np.nan)
         for i in range(len(x_values)):
             for j in range(len(y_values)):
@@ -721,6 +721,15 @@ class Visualization3DWidget(QOpenGLWidget):
     def get_grid_visible(self):
         return self.grid_visible
 
+    def get_grid_size_x(self):
+        return self.grid_size_x
+
+    def get_grid_size_y(self):
+        return self.grid_size_y
+
+    def get_grid_size_z(self):
+        return self.grid_size_z
+
     def set_grid_size_x(self, size_x):
         self.grid_size_x = size_x
         self.build_objective_function_data()
@@ -733,5 +742,13 @@ class Visualization3DWidget(QOpenGLWidget):
 
     def set_grid_size_z(self, size_z):
         self.grid_size_z = size_z
+        self.build_objective_function_data()
+        self.update()
+
+    def get_resolution(self):
+        return self.resolution
+
+    def set_resolution(self, resolution):
+        self.resolution = resolution
         self.build_objective_function_data()
         self.update()
