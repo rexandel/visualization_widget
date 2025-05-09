@@ -52,6 +52,148 @@ class Visualization3DWidget(QOpenGLWidget):
         self.animation_timer.timeout.connect(self.update)
         self.animation_timer.start(16)
 
+    def render_number_0(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y - size / 2, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_1(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x, y + size / 2, z)
+        glVertex3f(x, y - size / 2, z)
+
+        glVertex3f(x - size / 4, y + size / 2, z)
+        glVertex3f(x, y + size / 2, z)
+        glEnd()
+
+    def render_number_2(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_3(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_4(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_5(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y, z)
+
+        glVertex3f(x + size / 2, y, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_minus(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+        glEnd()
+
+    def render_negative_number(self, x, y, z, number, size):
+        self.render_number_minus(x - size, y, z, size / 2)
+        self.render_number(x, y, z, abs(number), size)
+
+    def render_number(self, x, y, z, number, size):
+        glPushMatrix()
+        glTranslatef(x, y, z)
+        glRotatef(-self.rotation_y, 0, 1, 0)
+        glRotatef(-self.rotation_x, 1, 0, 0)
+
+        if number < 0:
+            self.render_negative_number(0, 0, 0, number, size)
+        elif number == 0:
+            self.render_number_0(0, 0, 0, size)
+        elif number == 1:
+            self.render_number_1(0, 0, 0, size)
+        elif number == 2:
+            self.render_number_2(0, 0, 0, size)
+        elif number == 3:
+            self.render_number_3(0, 0, 0, size)
+        elif number == 4:
+            self.render_number_4(0, 0, 0, size)
+        elif number == 5:
+            self.render_number_5(0, 0, 0, size)
+        elif number == 6:
+            self.render_number_6(0, 0, 0, size)
+        elif number == 7:
+            self.render_number_7(0, 0, 0, size)
+        elif number == 8:
+            self.render_number_8(0, 0, 0, size)
+        elif number == 9:
+            self.render_number_8(0, 0, 0, size)
+
+        glPopMatrix()
+
     def restore_default_view(self):
         self.rotation_x = self.default_rotation_x
         self.rotation_y = self.default_rotation_y
@@ -389,21 +531,26 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_axis_ticks(self):
         glDisable(GL_LIGHTING)
         glLineWidth(1.5)
-        tick_size = 0.2  # Размер деления (длина перпендикулярного отрезка)
+        tick_size = 0.2
+        label_offset = 0.3
+        label_size = 0.2
 
-        # Отрисовка делений на оси X
-        glColor3f(1, 0, 0)  # Красный для X
+        glColor3f(1, 0, 0)
         glBegin(GL_LINES)
         for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
-            if i != 0:  # Пропускаем начало координат
+            if i != 0:
                 glVertex3f(i, -tick_size / 2, 0)
                 glVertex3f(i, tick_size / 2, 0)
                 glVertex3f(i, 0, -tick_size / 2)
                 glVertex3f(i, 0, tick_size / 2)
         glEnd()
 
-        # Отрисовка делений на оси Y
-        glColor3f(0, 1, 0)  # Зеленый для Y
+        glColor3f(0, 0, 0)
+        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+            if i != 0:
+                self.render_number(i, -label_offset, 0, i, label_size)
+
+        glColor3f(0, 1, 0)
         glBegin(GL_LINES)
         for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
             if i != 0:
@@ -413,8 +560,12 @@ class Visualization3DWidget(QOpenGLWidget):
                 glVertex3f(0, i, tick_size / 2)
         glEnd()
 
-        # Отрисовка делений на оси Z
-        glColor3f(0, 0, 1)  # Синий для Z
+        glColor3f(0, 0, 0)
+        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+            if i != 0:
+                self.render_number(-label_offset, i, 0, i, label_size)
+
+        glColor3f(0, 0, 1)
         glBegin(GL_LINES)
         for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
             if i != 0:
@@ -423,6 +574,11 @@ class Visualization3DWidget(QOpenGLWidget):
                 glVertex3f(0, -tick_size / 2, i)
                 glVertex3f(0, tick_size / 2, i)
         glEnd()
+
+        glColor3f(0, 0, 0)
+        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+            if i != 0:
+                self.render_number(0, -label_offset, i, i, label_size)
 
         glEnable(GL_LIGHTING)
 
