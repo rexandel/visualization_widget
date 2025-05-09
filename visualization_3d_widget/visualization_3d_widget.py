@@ -36,6 +36,7 @@ class Visualization3DWidget(QOpenGLWidget):
 
         self.grid_visible = True
         self.axes_visible = True
+        self.axis_ticks_visible = True
 
         self.current_function = None
         self.constraints = []
@@ -146,7 +147,7 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnable(GL_LIGHTING)
 
     def draw_constraint_boundary(self, constraint):
-        resolution = 400
+        resolution = 100
         x = np.linspace(-self.grid_size, self.grid_size, resolution)
         y = np.linspace(-self.grid_size, self.grid_size, resolution)
         X, Y = np.meshgrid(x, y)
@@ -234,8 +235,8 @@ class Visualization3DWidget(QOpenGLWidget):
         if self.current_function is None:
             return
 
-        x_values = np.linspace(-self.grid_size, self.grid_size, 800)
-        y_values = np.linspace(-self.grid_size, self.grid_size, 800)
+        x_values = np.linspace(-self.grid_size, self.grid_size, 300)
+        y_values = np.linspace(-self.grid_size, self.grid_size, 300)
         z_values = np.full((len(x_values), len(y_values)), np.nan)
 
         for i in range(len(x_values)):
@@ -374,12 +375,55 @@ class Visualization3DWidget(QOpenGLWidget):
         glVertex3f(0, 0, self.grid_size)
         glEnd()
 
+        if self.axis_ticks_visible:
+            self.render_axis_ticks()
+
         offset = 0.7
         self.render_axis_label(self.grid_size + offset, 0, 0, "X", (0, 0, 0))
         self.render_axis_label(0, self.grid_size + offset, 0, "Y", (0, 0, 0))
         self.render_axis_label(0, 0, self.grid_size + offset, "Z", (0, 0, 0))
 
         glLineWidth(1)
+        glEnable(GL_LIGHTING)
+
+    def render_axis_ticks(self):
+        glDisable(GL_LIGHTING)
+        glLineWidth(1.5)
+        tick_size = 0.2  # Размер деления (длина перпендикулярного отрезка)
+
+        # Отрисовка делений на оси X
+        glColor3f(1, 0, 0)  # Красный для X
+        glBegin(GL_LINES)
+        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+            if i != 0:  # Пропускаем начало координат
+                glVertex3f(i, -tick_size / 2, 0)
+                glVertex3f(i, tick_size / 2, 0)
+                glVertex3f(i, 0, -tick_size / 2)
+                glVertex3f(i, 0, tick_size / 2)
+        glEnd()
+
+        # Отрисовка делений на оси Y
+        glColor3f(0, 1, 0)  # Зеленый для Y
+        glBegin(GL_LINES)
+        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+            if i != 0:
+                glVertex3f(-tick_size / 2, i, 0)
+                glVertex3f(tick_size / 2, i, 0)
+                glVertex3f(0, i, -tick_size / 2)
+                glVertex3f(0, i, tick_size / 2)
+        glEnd()
+
+        # Отрисовка делений на оси Z
+        glColor3f(0, 0, 1)  # Синий для Z
+        glBegin(GL_LINES)
+        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+            if i != 0:
+                glVertex3f(-tick_size / 2, 0, i)
+                glVertex3f(tick_size / 2, 0, i)
+                glVertex3f(0, -tick_size / 2, i)
+                glVertex3f(0, tick_size / 2, i)
+        glEnd()
+
         glEnable(GL_LIGHTING)
 
     def render_grid(self):
