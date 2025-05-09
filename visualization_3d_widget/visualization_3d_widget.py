@@ -12,10 +12,10 @@ class Visualization3DWidget(QOpenGLWidget):
         glutInit()
         super().__init__(parent)
 
-        self.default_rotation_x = -75
+        self.default_rotation_x = -50
         self.default_rotation_y = 0
-        self.default_rotation_z = 0
-        self.default_zoom_level = 20
+        self.default_rotation_z = 20
+        self.default_zoom_level = 30
         self.default_position_x = 0.0
         self.default_position_y = 0.0
 
@@ -31,12 +31,12 @@ class Visualization3DWidget(QOpenGLWidget):
         self.is_rotating = False
         self.is_moving = False
 
-        self.grid_size = 5
+        self.grid_size = 10
         self.grid_step = 1
 
         self.grid_visible = True
         self.axes_visible = True
-        self.axis_ticks_visible = True
+        self.axis_ticks_and_numbers_visible = True
 
         self.current_function = None
         self.constraints = []
@@ -151,6 +151,77 @@ class Visualization3DWidget(QOpenGLWidget):
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
 
+    def render_number_6(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y - size / 2, z)
+
+        glVertex3f(x + size / 2, y, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_7(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_8(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y - size / 2, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+        glEnd()
+
+    def render_number_9(self, x, y, z, size):
+        glLineWidth(1.5)
+        glBegin(GL_LINES)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y + size / 2, z)
+
+        glVertex3f(x - size / 2, y, z)
+        glVertex3f(x + size / 2, y, z)
+
+        glVertex3f(x - size / 2, y - size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x + size / 2, y + size / 2, z)
+        glVertex3f(x + size / 2, y - size / 2, z)
+
+        glVertex3f(x - size / 2, y + size / 2, z)
+        glVertex3f(x - size / 2, y, z)
+        glEnd()
+
     def render_number_minus(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
@@ -171,26 +242,34 @@ class Visualization3DWidget(QOpenGLWidget):
 
         if number < 0:
             self.render_negative_number(0, 0, 0, number, size)
-        elif number == 0:
-            self.render_number_0(0, 0, 0, size)
-        elif number == 1:
-            self.render_number_1(0, 0, 0, size)
-        elif number == 2:
-            self.render_number_2(0, 0, 0, size)
-        elif number == 3:
-            self.render_number_3(0, 0, 0, size)
-        elif number == 4:
-            self.render_number_4(0, 0, 0, size)
-        elif number == 5:
-            self.render_number_5(0, 0, 0, size)
-        elif number == 6:
-            self.render_number_6(0, 0, 0, size)
-        elif number == 7:
-            self.render_number_7(0, 0, 0, size)
-        elif number == 8:
-            self.render_number_8(0, 0, 0, size)
-        elif number == 9:
-            self.render_number_8(0, 0, 0, size)
+        else:
+            digits = str(number)
+            total_width = len(digits) * size * 0.75
+            start_x = -total_width / 2 + size / 2
+
+            for digit in digits:
+                digit = int(digit)
+                if digit == 0:
+                    self.render_number_0(start_x, 0, 0, size)
+                elif digit == 1:
+                    self.render_number_1(start_x, 0, 0, size)
+                elif digit == 2:
+                    self.render_number_2(start_x, 0, 0, size)
+                elif digit == 3:
+                    self.render_number_3(start_x, 0, 0, size)
+                elif digit == 4:
+                    self.render_number_4(start_x, 0, 0, size)
+                elif digit == 5:
+                    self.render_number_5(start_x, 0, 0, size)
+                elif digit == 6:
+                    self.render_number_6(start_x, 0, 0, size)
+                elif digit == 7:
+                    self.render_number_7(start_x, 0, 0, size)
+                elif digit == 8:
+                    self.render_number_8(start_x, 0, 0, size)
+                elif digit == 9:
+                    self.render_number_9(start_x, 0, 0, size)
+                start_x += size * 0.75
 
         glPopMatrix()
 
@@ -377,8 +456,8 @@ class Visualization3DWidget(QOpenGLWidget):
         if self.current_function is None:
             return
 
-        x_values = np.linspace(-self.grid_size, self.grid_size, 300)
-        y_values = np.linspace(-self.grid_size, self.grid_size, 300)
+        x_values = np.linspace(-self.grid_size, self.grid_size, 200)
+        y_values = np.linspace(-self.grid_size, self.grid_size, 200)
         z_values = np.full((len(x_values), len(y_values)), np.nan)
 
         for i in range(len(x_values)):
@@ -499,28 +578,32 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
     def render_axes(self):
+        if not self.axes_visible:
+            return
+
         glDisable(GL_LIGHTING)
 
         glLineWidth(2)
         glBegin(GL_LINES)
 
+        axis_extension = 0.2
         glColor3f(1, 0, 0)
-        glVertex3f(-self.grid_size, 0, 0)
-        glVertex3f(self.grid_size, 0, 0)
+        glVertex3f(-self.grid_size - axis_extension, 0, 0)
+        glVertex3f(self.grid_size + axis_extension, 0, 0)
 
         glColor3f(0, 1, 0)
-        glVertex3f(0, -self.grid_size, 0)
-        glVertex3f(0, self.grid_size, 0)
+        glVertex3f(0, -self.grid_size - axis_extension, 0)
+        glVertex3f(0, self.grid_size + axis_extension, 0)
 
         glColor3f(0, 0, 1)
-        glVertex3f(0, 0, -self.grid_size)
-        glVertex3f(0, 0, self.grid_size)
+        glVertex3f(0, 0, -self.grid_size - axis_extension)
+        glVertex3f(0, 0, self.grid_size + axis_extension)
         glEnd()
 
-        if self.axis_ticks_visible:
+        if self.axis_ticks_and_numbers_visible:
             self.render_axis_ticks()
 
-        offset = 0.7
+        offset = 0.3
         self.render_axis_label(self.grid_size + offset, 0, 0, "X", (0, 0, 0))
         self.render_axis_label(0, self.grid_size + offset, 0, "Y", (0, 0, 0))
         self.render_axis_label(0, 0, self.grid_size + offset, "Z", (0, 0, 0))
@@ -529,6 +612,9 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnable(GL_LIGHTING)
 
     def render_axis_ticks(self):
+        if not self.axis_ticks_and_numbers_visible:
+            return
+
         glDisable(GL_LIGHTING)
         glLineWidth(1.5)
         tick_size = 0.2
@@ -688,3 +774,24 @@ class Visualization3DWidget(QOpenGLWidget):
     def set_show_constraints(self, show):
         self.show_constraints = show
         self.update()
+
+    def set_axes_visible(self, show):
+        self.axes_visible = show
+        self.update()
+
+    def get_axes_visible(self):
+        return self.axes_visible
+
+    def set_axis_ticks_and_numbers_visible(self, show):
+        self.axis_ticks_and_numbers_visible = show
+        self.update()
+
+    def get_axis_ticks_and_numbers_visible(self):
+        return self.axis_ticks_and_numbers_visible
+
+    def set_grid_visible(self, show):
+        self.grid_visible = show
+        self.update()
+
+    def get_grid_visible(self):
+        return self.grid_visible
