@@ -31,7 +31,9 @@ class Visualization3DWidget(QOpenGLWidget):
         self.is_rotating = False
         self.is_moving = False
 
-        self.grid_size = 10
+        self.grid_size_x = 10
+        self.grid_size_y = 10
+        self.grid_size_z = 10
         self.grid_step = 1
 
         self.grid_visible = True
@@ -55,16 +57,12 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_0(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y - size / 2, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
@@ -72,10 +70,8 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_1(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x, y + size / 2, z)
         glVertex3f(x, y - size / 2, z)
-
         glVertex3f(x - size / 4, y + size / 2, z)
         glVertex3f(x, y + size / 2, z)
         glEnd()
@@ -83,19 +79,14 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_2(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x - size / 2, y - size / 2, z)
         glEnd()
@@ -103,16 +94,12 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_3(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
@@ -120,13 +107,10 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_4(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
@@ -134,19 +118,14 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_5(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y, z)
-
         glVertex3f(x + size / 2, y, z)
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
@@ -154,19 +133,14 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_6(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y - size / 2, z)
-
         glVertex3f(x + size / 2, y, z)
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
@@ -174,10 +148,8 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_7(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y - size / 2, z)
         glEnd()
@@ -185,19 +157,14 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_8(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y - size / 2, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
         glEnd()
@@ -205,19 +172,14 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_9(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y + size / 2, z)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
-
         glVertex3f(x - size / 2, y - size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x + size / 2, y + size / 2, z)
         glVertex3f(x + size / 2, y - size / 2, z)
-
         glVertex3f(x - size / 2, y + size / 2, z)
         glVertex3f(x - size / 2, y, z)
         glEnd()
@@ -225,7 +187,6 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_number_minus(self, x, y, z, size):
         glLineWidth(1.5)
         glBegin(GL_LINES)
-
         glVertex3f(x - size / 2, y, z)
         glVertex3f(x + size / 2, y, z)
         glEnd()
@@ -326,17 +287,13 @@ class Visualization3DWidget(QOpenGLWidget):
     def paintGL(self):
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POLYGON_SMOOTH)
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
-
         gluLookAt(0, 0, self.zoom_level, 0, 0, 0, 0, 1, 0)
-
         glTranslatef(self.position_x, self.position_y, 0)
         glRotatef(self.rotation_x, 1, 0, 0)
         glRotatef(self.rotation_y, 0, 1, 0)
         glRotatef(self.rotation_z, 0, 0, 1)
-
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glDisable(GL_POLYGON_SMOOTH)
         glDisable(GL_LINE_SMOOTH)
@@ -369,16 +326,16 @@ class Visualization3DWidget(QOpenGLWidget):
 
     def draw_constraint_boundary(self, constraint):
         resolution = 100
-        x = np.linspace(-self.grid_size, self.grid_size, resolution)
-        y = np.linspace(-self.grid_size, self.grid_size, resolution)
+        x = np.linspace(-self.grid_size_x, self.grid_size_x, resolution)
+        y = np.linspace(-self.grid_size_y, self.grid_size_y, resolution)
         X, Y = np.meshgrid(x, y)
-
         Z = np.zeros_like(X)
+
         for i in range(resolution):
             for j in range(resolution):
                 Z[i, j] = constraint(X[i, j], Y[i, j])
-
         glBegin(GL_LINES)
+
         for i in range(resolution - 1):
             for j in range(resolution - 1):
                 edges = []
@@ -387,27 +344,23 @@ class Visualization3DWidget(QOpenGLWidget):
                     x0 = X[i, j] + t * (X[i + 1, j] - X[i, j])
                     y0 = Y[i, j]
                     edges.append((x0, y0))
-
                 if Z[i + 1, j] * Z[i + 1, j + 1] <= 0:
                     t = abs(Z[i + 1, j]) / (abs(Z[i + 1, j]) + abs(Z[i + 1, j + 1])) if abs(Z[i + 1, j]) + abs(
                         Z[i + 1, j + 1]) > 0 else 0.5
                     x0 = X[i + 1, j]
                     y0 = Y[i + 1, j] + t * (Y[i + 1, j + 1] - Y[i + 1, j])
                     edges.append((x0, y0))
-
                 if Z[i, j + 1] * Z[i + 1, j + 1] <= 0:
                     t = abs(Z[i, j + 1]) / (abs(Z[i, j + 1]) + abs(Z[i + 1, j + 1])) if abs(Z[i, j + 1]) + abs(
                         Z[i + 1, j + 1]) > 0 else 0.5
                     x0 = X[i, j + 1] + t * (X[i + 1, j + 1] - X[i, j + 1])
                     y0 = Y[i, j + 1]
                     edges.append((x0, y0))
-
                 if Z[i, j] * Z[i, j + 1] <= 0:
                     t = abs(Z[i, j]) / (abs(Z[i, j]) + abs(Z[i, j + 1])) if abs(Z[i, j]) + abs(Z[i, j + 1]) > 0 else 0.5
                     x0 = X[i, j]
                     y0 = Y[i, j] + t * (Y[i, j + 1] - Y[i, j])
                     edges.append((x0, y0))
-
                 if len(edges) >= 2:
                     for k in range(len(edges) - 1):
                         x0, y0 = edges[k]
@@ -416,12 +369,11 @@ class Visualization3DWidget(QOpenGLWidget):
                             z0 = self.current_function(x0, y0)
                             z1 = self.current_function(x1, y1)
                             z0_norm = (z0 - self.z_min) / (
-                                        self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size
+                                        self.z_max - self.z_min) * 2 * self.grid_size_z - self.grid_size_z
                             z1_norm = (z1 - self.z_min) / (
-                                        self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size
+                                        self.z_max - self.z_min) * 2 * self.grid_size_z - self.grid_size_z
                         else:
                             z0_norm = z1_norm = 0
-
                         glVertex3f(x0, y0, z0_norm)
                         glVertex3f(x1, y1, z1_norm)
         glEnd()
@@ -429,15 +381,12 @@ class Visualization3DWidget(QOpenGLWidget):
     def create_function_display_list(self):
         display_list = glGenLists(1)
         glNewList(display_list, GL_COMPILE)
-
         if self.objective_function_data:
             for strip in self.objective_function_data:
                 glBegin(GL_QUAD_STRIP)
                 current_strip_valid = False
-
                 for idx, (vertex, color) in enumerate(strip):
                     current_valid = not np.isnan(vertex[2])
-
                     if current_valid:
                         glColor3f(*color)
                         glVertex3f(*vertex)
@@ -446,33 +395,26 @@ class Visualization3DWidget(QOpenGLWidget):
                         glEnd()
                         glBegin(GL_QUAD_STRIP)
                         current_strip_valid = False
-
                 glEnd()
-
         glEndList()
         return display_list
 
     def build_objective_function_data(self):
         if self.current_function is None:
             return
-
-        x_values = np.linspace(-self.grid_size, self.grid_size, 200)
-        y_values = np.linspace(-self.grid_size, self.grid_size, 200)
+        x_values = np.linspace(-self.grid_size_x, self.grid_size_x, 200)
+        y_values = np.linspace(-self.grid_size_y, self.grid_size_y, 200)
         z_values = np.full((len(x_values), len(y_values)), np.nan)
-
         for i in range(len(x_values)):
             for j in range(len(y_values)):
                 x = x_values[i]
                 y = y_values[j]
-
                 if self.constraints:
                     valid = all(constraint(x, y) <= 0 for constraint in self.constraints)
                 else:
                     valid = True
-
                 if valid:
                     z_values[i, j] = self.current_function(x, y)
-
         valid_z = z_values[~np.isnan(z_values)]
         if len(valid_z) > 0:
             self.z_min = np.min(valid_z)
@@ -480,10 +422,8 @@ class Visualization3DWidget(QOpenGLWidget):
         else:
             self.z_min = 0
             self.z_max = 1
-
         shadow_strength = 0.6
         self.objective_function_data = []
-
         for i in range(len(x_values) - 1):
             strip = []
             for j in range(len(y_values)):
@@ -492,36 +432,31 @@ class Visualization3DWidget(QOpenGLWidget):
                 y = y_values[j]
                 z1 = z_values[i, j]
                 z2 = z_values[i + 1, j]
-
                 z1_norm = (z1 - self.z_min) / (
-                        self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
+                        self.z_max - self.z_min) * 2 * self.grid_size_z - self.grid_size_z if not np.isnan(
                     z1) else np.nan
                 z2_norm = (z2 - self.z_min) / (
-                        self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size if not np.isnan(
+                        self.z_max - self.z_min) * 2 * self.grid_size_z - self.grid_size_z if not np.isnan(
                     z2) else np.nan
-
                 if not np.isnan(z1):
                     z1_shadow = ((z1 - self.z_min) / (self.z_max - self.z_min)) ** 0.5
                     shadow_intensity1 = 1.0 - shadow_strength * (1.0 - z1_shadow)
-                    color1 = (((x1 + self.grid_size) / (2 * self.grid_size)) * shadow_intensity1,
-                              ((y + self.grid_size) / (2 * self.grid_size)) * shadow_intensity1,
+                    color1 = (((x1 + self.grid_size_x) / (2 * self.grid_size_x)) * shadow_intensity1,
+                              ((y + self.grid_size_y) / (2 * self.grid_size_y)) * shadow_intensity1,
                               0.7 * shadow_intensity1)
                 else:
                     color1 = (0, 0, 0)
-
                 if not np.isnan(z2):
                     z2_shadow = ((z2 - self.z_min) / (self.z_max - self.z_min)) ** 0.5
                     shadow_intensity2 = 1.0 - shadow_strength * (1.0 - z2_shadow)
-                    color2 = (((x2 + self.grid_size) / (2 * self.grid_size)) * shadow_intensity2,
-                              ((y + self.grid_size) / (2 * self.grid_size)) * shadow_intensity2,
+                    color2 = (((x2 + self.grid_size_x) / (2 * self.grid_size_x)) * shadow_intensity2,
+                              ((y + self.grid_size_y) / (2 * self.grid_size_y)) * shadow_intensity2,
                               0.7 * shadow_intensity2)
                 else:
                     color2 = (0, 0, 0)
-
                 strip.append(((x1, y, z1_norm), color1))
                 strip.append(((x2, y, z2_norm), color2))
             self.objective_function_data.append(strip)
-
         if 'function' in self.display_lists:
             glDeleteLists(self.display_lists['function'], 1)
             self.display_lists.pop('function')
@@ -531,10 +466,8 @@ class Visualization3DWidget(QOpenGLWidget):
         glColor3f(*color)
         glPushMatrix()
         glTranslatef(x, y, z)
-
         glRotatef(-self.rotation_y, 0, 1, 0)
         glRotatef(-self.rotation_x, 1, 0, 0)
-
         size = 0.5
         if label == "X":
             self.render_x_symbol(0, 0, 0, size)
@@ -542,7 +475,6 @@ class Visualization3DWidget(QOpenGLWidget):
             self.render_y_symbol(0, 0, 0, size)
         elif label == "Z":
             self.render_z_symbol(0, 0, 0, size)
-
         glPopMatrix()
         glEnable(GL_LIGHTING)
 
@@ -588,26 +520,23 @@ class Visualization3DWidget(QOpenGLWidget):
 
         axis_extension = 0.2
         glColor3f(1, 0, 0)
-        glVertex3f(-self.grid_size - axis_extension, 0, 0)
-        glVertex3f(self.grid_size + axis_extension, 0, 0)
-
+        glVertex3f(-self.grid_size_x - axis_extension, 0, 0)
+        glVertex3f(self.grid_size_x + axis_extension, 0, 0)
         glColor3f(0, 1, 0)
-        glVertex3f(0, -self.grid_size - axis_extension, 0)
-        glVertex3f(0, self.grid_size + axis_extension, 0)
-
+        glVertex3f(0, -self.grid_size_y - axis_extension, 0)
+        glVertex3f(0, self.grid_size_y + axis_extension, 0)
         glColor3f(0, 0, 1)
-        glVertex3f(0, 0, -self.grid_size - axis_extension)
-        glVertex3f(0, 0, self.grid_size + axis_extension)
+        glVertex3f(0, 0, -self.grid_size_z - axis_extension)
+        glVertex3f(0, 0, self.grid_size_z + axis_extension)
         glEnd()
 
         if self.axis_ticks_and_numbers_visible:
             self.render_axis_ticks()
 
         offset = 0.3
-        self.render_axis_label(self.grid_size + offset, 0, 0, "X", (0, 0, 0))
-        self.render_axis_label(0, self.grid_size + offset, 0, "Y", (0, 0, 0))
-        self.render_axis_label(0, 0, self.grid_size + offset, "Z", (0, 0, 0))
-
+        self.render_axis_label(self.grid_size_x + offset, 0, 0, "X", (0, 0, 0))
+        self.render_axis_label(0, self.grid_size_y + offset, 0, "Y", (0, 0, 0))
+        self.render_axis_label(0, 0, self.grid_size_z + offset, "Z", (0, 0, 0))
         glLineWidth(1)
         glEnable(GL_LIGHTING)
 
@@ -623,7 +552,7 @@ class Visualization3DWidget(QOpenGLWidget):
 
         glColor3f(1, 0, 0)
         glBegin(GL_LINES)
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_x, self.grid_size_x + 1, self.grid_step):
             if i != 0:
                 glVertex3f(i, -tick_size / 2, 0)
                 glVertex3f(i, tick_size / 2, 0)
@@ -632,13 +561,13 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
         glColor3f(0, 0, 0)
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_x, self.grid_size_x + 1, self.grid_step):
             if i != 0:
                 self.render_number(i, -label_offset, 0, i, label_size)
 
         glColor3f(0, 1, 0)
         glBegin(GL_LINES)
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_y, self.grid_size_y + 1, self.grid_step):
             if i != 0:
                 glVertex3f(-tick_size / 2, i, 0)
                 glVertex3f(tick_size / 2, i, 0)
@@ -647,13 +576,13 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
         glColor3f(0, 0, 0)
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_y, self.grid_size_y + 1, self.grid_step):
             if i != 0:
                 self.render_number(-label_offset, i, 0, i, label_size)
 
         glColor3f(0, 0, 1)
         glBegin(GL_LINES)
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_z, self.grid_size_z + 1, self.grid_step):
             if i != 0:
                 glVertex3f(-tick_size / 2, 0, i)
                 glVertex3f(tick_size / 2, 0, i)
@@ -662,7 +591,7 @@ class Visualization3DWidget(QOpenGLWidget):
         glEnd()
 
         glColor3f(0, 0, 0)
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_z, self.grid_size_z + 1, self.grid_step):
             if i != 0:
                 self.render_number(0, -label_offset, i, i, label_size)
 
@@ -671,19 +600,16 @@ class Visualization3DWidget(QOpenGLWidget):
     def render_grid(self):
         glLineWidth(1)
         glColor3f(0.7, 0.7, 0.7)
-
-        z_position = -self.grid_size
-
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        z_position = -self.grid_size_z
+        for i in range(-self.grid_size_x, self.grid_size_x + 1, self.grid_step):
             glBegin(GL_LINES)
-            glVertex3f(i, -self.grid_size, z_position)
-            glVertex3f(i, self.grid_size, z_position)
+            glVertex3f(i, -self.grid_size_y, z_position)
+            glVertex3f(i, self.grid_size_y, z_position)
             glEnd()
-
-        for i in range(-self.grid_size, self.grid_size + 1, self.grid_step):
+        for i in range(-self.grid_size_y, self.grid_size_y + 1, self.grid_step):
             glBegin(GL_LINES)
-            glVertex3f(-self.grid_size, i, z_position)
-            glVertex3f(self.grid_size, i, z_position)
+            glVertex3f(-self.grid_size_x, i, z_position)
+            glVertex3f(self.grid_size_x, i, z_position)
             glEnd()
 
     def mousePressEvent(self, event):
@@ -731,8 +657,7 @@ class Visualization3DWidget(QOpenGLWidget):
 
         for i in range(len(points)):
             z_values[i] = self.current_function(points[i, 0], points[i, 1])
-
-        z_norm = (z_values - self.z_min) / (self.z_max - self.z_min) * 2 * self.grid_size - self.grid_size
+        z_norm = (z_values - self.z_min) / (self.z_max - self.z_min) * 2 * self.grid_size_z - self.grid_size_z
         vertices = np.column_stack((points, z_norm)).astype(np.float32)
 
         glPointSize(10)
@@ -795,3 +720,18 @@ class Visualization3DWidget(QOpenGLWidget):
 
     def get_grid_visible(self):
         return self.grid_visible
+
+    def set_grid_size_x(self, size_x):
+        self.grid_size_x = size_x
+        self.build_objective_function_data()
+        self.update()
+
+    def set_grid_size_y(self, size_y):
+        self.grid_size_y = size_y
+        self.build_objective_function_data()
+        self.update()
+
+    def set_grid_size_z(self, size_z):
+        self.grid_size_z = size_z
+        self.build_objective_function_data()
+        self.update()
