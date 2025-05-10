@@ -752,3 +752,19 @@ class Visualization3DWidget(QOpenGLWidget):
         self.resolution = resolution
         self.build_objective_function_data()
         self.update()
+
+    def get_x_axis_range(self):
+        return [-self.grid_size_x, self.grid_size_x]
+
+    def get_y_axis_range(self):
+        return [-self.grid_size_y, self.grid_size_y]
+
+    def get_z_axis_range(self):
+        return [-self.grid_size_z, self.grid_size_z]
+
+    def get_all_axes_ranges(self):
+        return (
+            [-self.grid_size_x, self.grid_size_x],
+            [-self.grid_size_y, self.grid_size_y],
+            [-self.grid_size_z, self.grid_size_z]
+        )
